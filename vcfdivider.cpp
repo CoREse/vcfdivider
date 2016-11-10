@@ -1,6 +1,6 @@
 /* File: vcfdivider.cpp
  * Author: CRE
- * Last Edited: Thu Nov 10 12:29:09 2016
+ * Last Edited: Thu Nov 10 12:44:10 2016
  */
 
 #include "vcfdivider.h"
@@ -69,6 +69,7 @@ static inline uint printHeader(char* Buffer, set<string> &SelectedSamples, set<u
 
 static inline void printBody(FILE * InFile, char * Buffer, uint SampleSize, set<unsigned> &SelectedColumns, FILE* SFile, FILE* DFile)
 {
+	uint DoneLine=0;
 	while (!feof(InFile))
 	{
 		fscanf(InFile, "%s", Buffer);
@@ -98,6 +99,8 @@ static inline void printBody(FILE * InFile, char * Buffer, uint SampleSize, set<
 				fprintf(DFile, "\t%s", Buffer);
 			}
 		}
+		++DoneLine;
+		if (DoneLine%10000==0) warn("%u lines have been proceeded.", DoneLine);
 	}
 }
 
@@ -149,9 +152,12 @@ void vcfdivide(const char* InFileName, const char * SSampleFileName)
 	getSSamples(SSampleFile, Buffer, SelectedSamples);
 	fclose(SSampleFile);
 
+	updateTime("Initializing", "Printing meta data and head...");
 	printMeta(InFile, Buffer, SFile, DFile);
 	SampleSize=printHeader(Buffer, SelectedSamples, SelectedColumns, SFile, DFile);
+	updateTime("Printing meta data and head", "Printing body...");
 	printBody(InFile, Buffer, SampleSize, SelectedColumns, SFile, DFile);
+	updateTime("Done! All the work");
 
 	fclose(InFile);
 	fclose(SFile);
