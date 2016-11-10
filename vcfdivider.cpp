@@ -1,6 +1,6 @@
 /* File: vcfdivider.cpp
  * Author: CRE
- * Last Edited: Wed Nov  9 19:55:43 2016
+ * Last Edited: Thu Nov 10 12:29:09 2016
  */
 
 #include "vcfdivider.h"
@@ -71,6 +71,8 @@ static inline void printBody(FILE * InFile, char * Buffer, uint SampleSize, set<
 {
 	while (!feof(InFile))
 	{
+		fscanf(InFile, "%s", Buffer);
+		if (feof(InFile)) break;
 		fprintf(SFile,"\n");
 		fprintf(DFile,"\n");
 		for (uint i=0;i<9;++i)
@@ -79,8 +81,8 @@ static inline void printBody(FILE * InFile, char * Buffer, uint SampleSize, set<
 			{
 				fprintf(SFile, "\t");
 				fprintf(DFile, "\t");
+				fscanf(InFile, "%s", Buffer);
 			}
-			fscanf(InFile, "%s", Buffer);
 			fprintf(SFile, "%s", Buffer);
 			fprintf(DFile, "%s", Buffer);
 		}
@@ -104,6 +106,7 @@ static inline void getSSamples(FILE* SSampleFile, char * Buffer, set<string> &Se
 	while (!feof(SSampleFile))
 	{
 		fscanf(SSampleFile, "%s", Buffer);
+		if (feof(SSampleFile)) break;
 		SelectedSamples.insert(Buffer);
 	}
 }
