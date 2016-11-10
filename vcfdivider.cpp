@@ -1,6 +1,6 @@
 /* File: vcfdivider.cpp
  * Author: CRE
- * Last Edited: Thu Nov 10 12:44:10 2016
+ * Last Edited: Thu Nov 10 12:48:20 2016
  */
 
 #include "vcfdivider.h"
@@ -157,7 +157,7 @@ void vcfdivide(const char* InFileName, const char * SSampleFileName)
 	SampleSize=printHeader(Buffer, SelectedSamples, SelectedColumns, SFile, DFile);
 	updateTime("Printing meta data and head", "Printing body...");
 	printBody(InFile, Buffer, SampleSize, SelectedColumns, SFile, DFile);
-	updateTime("Done! All the work");
+	updateTime("Printing body", "All the work is DONE!");
 
 	fclose(InFile);
 	fclose(SFile);
